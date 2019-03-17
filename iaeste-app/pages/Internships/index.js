@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Button, ScrollView } from "react-native";
+import { StyleSheet, Button, ScrollView, RefreshControl } from "react-native";
 
 import InternshipCard from "../../components/InternshipCard";
 
@@ -23,19 +23,35 @@ class Internships extends React.Component {
   };
 
   state = {
-    internships: []
+    internships: [],
+    refreshing: false
   };
 
-  componentDidMount() {
+  _onRefresh = () => {
+    this.setState({refreshing: true});
+    this.fetchInternships().then(() => {
+      this.setState({refreshing: false});
+    });
+  }
+
+  fetchInternships = () =>
     fetch("https://iaeste.se/api/wp-json/internships/v1/offers/foreign")
       .then(response => response.json())
       .then(internships => this.setState({ internships }))
       .catch(error => console.error(error));
+
+  componentDidMount() {
+    this.fetchInternships();
   }
 
   render() {
     return (
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={styles.container} refreshControl={
+        <RefreshControl
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh}
+        />
+      }>
         {this.state.internships.map(internship => (
           <InternshipCard
             key={internship.RefNo}
