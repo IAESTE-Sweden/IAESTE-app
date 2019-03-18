@@ -1,18 +1,8 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  Linking,
-  ScrollView,
-  TouchableOpacity
-} from "react-native";
+import { StyleSheet, Text, Linking, ScrollView } from "react-native";
 
-const LabeledText = ({ children, label }) => (
-  <>
-    <Text style={styles.h2}>{label}</Text>
-    <Text style={styles.p}>{children}</Text>
-  </>
-);
+import LabeledText from "../../components/LabeledText";
+import Button from "../../components/Button";
 
 class InternshipDetails extends React.Component {
   render() {
@@ -28,6 +18,7 @@ class InternshipDetails extends React.Component {
       RequiredKnowledgeAndExperiences
     } = this.props.navigation.state.params;
     const location = [City, Country];
+
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.h1}>{Employer}</Text>
@@ -51,12 +42,10 @@ class InternshipDetails extends React.Component {
             </Text>
           </>
         )}
-        <TouchableOpacity
-          style={styles.primaryButton}
+        <Button
+          title="Visit Exchange Platform"
           onPress={() => Linking.openURL("https://iaeste.net")}
-        >
-          <Text style={styles.buttonText}>Visit Exchange Platform</Text>
-        </TouchableOpacity>
+        />
       </ScrollView>
     );
   }
@@ -99,16 +88,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "tomato",
     marginBottom: 10
-  },
-  primaryButton: {
-    backgroundColor: "tomato",
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10
-  },
-  buttonText: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 20
   }
 });
