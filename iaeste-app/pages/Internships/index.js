@@ -2,6 +2,8 @@ import React from "react";
 import { StyleSheet, Button, ScrollView, RefreshControl } from "react-native";
 
 import InternshipCard from "../../components/InternshipCard";
+import LoadingState from "../../components/LoadingState";
+import Search from "../../components/Search";
 
 class Internships extends React.Component {
   static navigationOptions = {
@@ -24,20 +26,40 @@ class Internships extends React.Component {
 
   state = {
     internships: [],
-    refreshing: false
+    search: "",
+    refreshing: false,
+    loading: true
+  };
+
+  handleSearchChange = search => {
+    this.setState({ search });
+  };
+
+  filterInternships = () => {
+    const { internships, search } = this.state;
+
+    const filterValues = internship => {
+      const matchedValues = Object.values(internship).filter(value =>
+        value.toLowerCase().includes(search.toLowerCase())
+      );
+      return matchedValues.length > 0;
+    };
+    return search.length === 0
+      ? internships
+      : internships.filter(internship => filterValues(internship));
   };
 
   _onRefresh = () => {
-    this.setState({refreshing: true});
+    this.setState({ refreshing: true });
     this.fetchInternships().then(() => {
-      this.setState({refreshing: false});
+      this.setState({ refreshing: false });
     });
-  }
+  };
 
   fetchInternships = () =>
     fetch("https://iaeste.se/api/wp-json/internships/v1/offers/foreign")
       .then(response => response.json())
-      .then(internships => this.setState({ internships }))
+      .then(internships => this.setState({ internships, loading: false }))
       .catch(error => console.error(error));
 
   componentDidMount() {
@@ -45,14 +67,22 @@ class Internships extends React.Component {
   }
 
   render() {
+    const { search, loading, refreshing } = this.state;
+    const filteredInternships = this.filterInternships();
+
+    if (loading) {
+      return <LoadingState />;
+    }
+
     return (
-      <ScrollView contentContainerStyle={styles.container} refreshControl={
-        <RefreshControl
-          refreshing={this.state.refreshing}
-          onRefresh={this._onRefresh}
-        />
-      }>
-        {this.state.internships.map(internship => (
+      <ScrollView
+        contentContainerStyle={styles.container}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
+        }
+      >
+        <Search value={search} onChange={this.handleSearchChange} />
+        {filteredInternships.map(internship => (
           <InternshipCard
             key={internship.RefNo}
             navigate={this.props.navigation.navigate}
