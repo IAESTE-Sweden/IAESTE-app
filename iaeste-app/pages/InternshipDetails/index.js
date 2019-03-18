@@ -1,9 +1,23 @@
 import React from "react";
-import { StyleSheet, Text, Button, Linking, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  Linking,
+  ScrollView,
+  TouchableOpacity
+} from "react-native";
+
+const LabeledText = ({ children, label }) => (
+  <>
+    <Text style={styles.h2}>{label}</Text>
+    <Text style={styles.p}>{children}</Text>
+  </>
+);
 
 class InternshipDetails extends React.Component {
   render() {
     const {
+      Employer,
       RefNo,
       Country,
       City,
@@ -13,27 +27,36 @@ class InternshipDetails extends React.Component {
       Workkind,
       RequiredKnowledgeAndExperiences
     } = this.props.navigation.state.params;
+    const location = [City, Country];
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.h1}>{RefNo}</Text>
-        <Text style={styles.h3}>
-          {City}, {Country}
-        </Text>
-        <Text style={styles.h3}>{ExchangeType}</Text>
-        <Text style={styles.h2}>Business</Text>
-        <Text style={styles.p}>{Business.trim()}</Text>
-        <Text style={styles.h2}>Work Kind</Text>
-        <Text style={styles.p}>{Workkind.trim()}</Text>
-        <Text style={styles.h2}>Required knowledge and experiences</Text>
-        <Text style={styles.p}>{RequiredKnowledgeAndExperiences.trim()}</Text>
-        <Text style={styles.h2}>Website</Text>
-        <Text style={styles.a} onPress={() => Linking.openURL(Website)}>
-          {Website}
-        </Text>
-        <Button
-          title="Visit Exchange Platform"
+        <Text style={styles.h1}>{Employer}</Text>
+        <Text style={styles.h3}>{location.join(", ")}</Text>
+        {RefNo && <LabeledText label="Ref. No">{RefNo}</LabeledText>}
+        {ExchangeType && (
+          <LabeledText label="Offer Type">{ExchangeType}</LabeledText>
+        )}
+        {Business && <LabeledText label="Business">{Business}</LabeledText>}
+        {Workkind && <LabeledText label="Work Kind">{Workkind}</LabeledText>}
+        {RequiredKnowledgeAndExperiences && (
+          <LabeledText label="Required knowledge and experiences">
+            {RequiredKnowledgeAndExperiences.trim()}
+          </LabeledText>
+        )}
+        {Website && (
+          <>
+            <Text style={styles.h2}>Website</Text>
+            <Text style={styles.a} onPress={() => Linking.openURL(Website)}>
+              {Website}
+            </Text>
+          </>
+        )}
+        <TouchableOpacity
+          style={styles.primaryButton}
           onPress={() => Linking.openURL("https://iaeste.net")}
-        />
+        >
+          <Text style={styles.buttonText}>Visit Exchange Platform</Text>
+        </TouchableOpacity>
       </ScrollView>
     );
   }
@@ -65,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#555",
     fontWeight: "300",
-    marginBottom: 5
+    marginBottom: 15
   },
   p: {
     fontSize: 16,
@@ -74,7 +97,18 @@ const styles = StyleSheet.create({
   },
   a: {
     fontSize: 16,
-    color: "blue",
+    color: "tomato",
     marginBottom: 10
+  },
+  primaryButton: {
+    backgroundColor: "tomato",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10
+  },
+  buttonText: {
+    color: "white",
+    textAlign: "center",
+    fontSize: 20
   }
 });

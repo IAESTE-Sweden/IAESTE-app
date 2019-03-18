@@ -6,7 +6,12 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 const Search = ({ value, onChange }) => {
   return (
     <View style={styles.container}>
-      <TextInput style={styles.search} value={value} onChangeText={onChange} />
+      <TextInput
+        style={styles.search}
+        placeholder="Search employer, country, ref. no..."
+        value={value}
+        onChangeText={onChange}
+      />
       <Ionicons name="ios-search" size={25} color="#555" />
     </View>
   );
@@ -29,6 +34,6 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     fontWeight: "400",
-    letterSpacing: 1.4,
+    letterSpacing: 1.4
   }
 });
