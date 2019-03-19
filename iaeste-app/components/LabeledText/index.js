@@ -1,15 +1,17 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text
-} from "react-native";
+import { StyleSheet, Text } from "react-native";
 
-const LabeledText = ({ children, label }) => (
-  <>
-    <Text style={styles.h2}>{label}</Text>
-    <Text style={styles.p}>{children}</Text>
-  </>
-);
+capitalize = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+const LabeledText = ({ children, label }) =>
+  children && typeof children === "string" && (
+    <>
+      <Text style={styles.h2}>{label}</Text>
+      <Text style={styles.p}>{capitalize(children.trim())}</Text>
+    </>
+  );
 
 export default LabeledText;
 

@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, Linking, ScrollView } from "react-native";
 
+import moment from "moment";
+
 import LabeledText from "../../components/LabeledText";
 import Button from "../../components/Button";
 
@@ -15,25 +17,28 @@ class InternshipDetails extends React.Component {
       Website,
       ExchangeType,
       Workkind,
-      RequiredKnowledgeAndExperiences
+      RequiredKnowledgeAndExperiences,
+      Deadline,
+      Language1,
+      Language1Level
     } = this.props.navigation.state.params;
-    const location = [City, Country];
+    const location = [...(City ? [City] : []), ...(Country ? [Country] : [])];
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.h1}>{Employer}</Text>
-        <Text style={styles.h3}>{location.join(", ")}</Text>
-        {RefNo && <LabeledText label="Ref. No">{RefNo}</LabeledText>}
-        {ExchangeType && (
-          <LabeledText label="Offer Type">{ExchangeType}</LabeledText>
+        {location.length > 0 && (
+          <Text style={styles.h3}>{location.join(", ")}</Text>
         )}
-        {Business && <LabeledText label="Business">{Business}</LabeledText>}
-        {Workkind && <LabeledText label="Work Kind">{Workkind}</LabeledText>}
-        {RequiredKnowledgeAndExperiences && (
-          <LabeledText label="Required knowledge and experiences">
-            {RequiredKnowledgeAndExperiences.trim()}
-          </LabeledText>
-        )}
+        <LabeledText label="Ref. No">{RefNo}</LabeledText>
+        <LabeledText label="Offer Type">{ExchangeType}</LabeledText>
+        <LabeledText label="Business">{Business}</LabeledText>
+        <LabeledText label="Work Kind">{Workkind}</LabeledText>
+        <LabeledText label="Required knowledge and experiences">
+          {RequiredKnowledgeAndExperiences}
+        </LabeledText>
+        <LabeledText label="Languages">{Language1} ({Language1Level})</LabeledText>
+        <LabeledText label="Deadline">{moment(Deadline).format("DD MMM YYYY")}</LabeledText>
         {Website && (
           <>
             <Text style={styles.h2}>Website</Text>

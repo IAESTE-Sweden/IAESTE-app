@@ -11,14 +11,17 @@ export default Button;
 
 const styles = StyleSheet.create({
   primaryButton: {
+    justifyContent: "center",
     backgroundColor: "tomato",
     padding: 10,
     borderRadius: 5,
-    marginTop: 10
+    marginTop: 10,
+    marginBottom: 10,
+    height: 60
   },
   primaryText: {
     color: "white",
     textAlign: "center",
-    fontSize: 20
+    fontSize: 22
   }
 });

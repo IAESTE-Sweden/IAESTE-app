@@ -1,29 +1,29 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const InternshipCard = ({ internship, navigate }) => (
+const InternshipCard = ({ internship, navigate }) => {
+  const { Employer, City, Country, RefNo, Business } = internship;
+  return (
   <TouchableOpacity
     style={styles.container}
     onPress={() => navigate("Details", internship)}
   >
-    <Text style={styles.title}>{internship.Employer}</Text>
+    <Text style={styles.title}>{Employer}</Text>
     <Text style={styles.location}>
-      {internship.City}, {internship.Country}
+      {City}, {Country}
     </Text>
-    <Text style={styles.refno}>{internship.RefNo}</Text>
-    <Text style={styles.business}>{internship.Business}</Text>
+    <Text style={styles.refno}>{RefNo}</Text>
+    <Text style={styles.business}>{Business}</Text>
   </TouchableOpacity>
 );
+  }
 
 export default InternshipCard;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "95%",
     backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#eee",
     alignItems: "flex-start",
     justifyContent: "flex-start",
     padding: 15,

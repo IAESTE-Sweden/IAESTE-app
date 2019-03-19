@@ -12,7 +12,9 @@ const Search = ({ value, onChange }) => {
         value={value}
         onChangeText={onChange}
       />
-      <Ionicons name="ios-search" size={25} color="#555" />
+      <View style={styles.icon}>
+        <Ionicons name="ios-search" size={25} color="#555" />
+      </View>
     </View>
   );
 };
@@ -21,19 +23,25 @@ export default Search;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: "row",
     flexWrap: "nowrap",
     alignItems: "center",
-    width: "95%",
-    borderRadius: 15,
+    justifyContent: "space-between",
+    height: 40,
+    borderRadius: 20,
     backgroundColor: "#eee",
     margin: 10
   },
   search: {
-    width: "90%",
+    flex: 1,
     padding: 10,
+    paddingLeft: 15,
     fontSize: 16,
     fontWeight: "400",
     letterSpacing: 1.4
+  },
+  icon: {
+    marginRight: 15
   }
 });

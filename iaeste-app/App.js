@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, SafeAreaView } from "react-native";
 import {
   createStackNavigator,
   createAppContainer,
@@ -24,17 +24,14 @@ class DetailsScreen extends React.Component {
 
 class App extends React.Component {
   render() {
-    return <AppContainer />;
+    return <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}><AppContainer /></SafeAreaView>;
   }
 }
 
-const defaultNavigationOptions = {
-  headerStyle: {
-    backgroundColor: "#f4511e"
-  },
-  headerTintColor: "#fff",
-  headerTitleStyle: {
-    fontWeight: "bold"
+const configOptions = {
+  headerMode: "none",
+  navigationOptions: {
+    headerVisible: false
   }
 };
 
@@ -45,10 +42,7 @@ const HomeStack = createStackNavigator(
   },
   {
     initialRouteName: "Internships",
-    defaultNavigationOptions,
-    navigationOptions: {
-      tabBarLabel: "Internships"
-    }
+    ...configOptions
   }
 );
 
@@ -58,13 +52,7 @@ const DetailsStack = createStackNavigator(
   },
   {
     initialRouteName: "Bookmarked",
-    defaultNavigationOptions: {
-      ...defaultNavigationOptions,
-      title: "Bookmarked"
-    },
-    navigationOptions: {
-      tabBarLabel: "Bookmarked"
-    }
+    ...configOptions
   }
 );
 

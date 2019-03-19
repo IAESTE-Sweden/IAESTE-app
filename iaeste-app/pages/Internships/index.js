@@ -1,29 +1,30 @@
 import React from "react";
-import { StyleSheet, Button, ScrollView, RefreshControl } from "react-native";
+import { StyleSheet, FlatList, Text, View, Platform } from "react-native";
 
 import InternshipCard from "../../components/InternshipCard";
 import LoadingState from "../../components/LoadingState";
 import Search from "../../components/Search";
 
-class Internships extends React.Component {
-  static navigationOptions = {
-    title: "Internships",
-    headerStyle: {
-      backgroundColor: "#f4511e"
-    },
-    headerTintColor: "#fff",
-    headerTitleStyle: {
-      fontWeight: "bold"
-    },
-    headerRight: (
-      <Button
-        onPress={() => alert("This is a button!")}
-        title="Info"
-        color="#fff"
-      />
-    )
-  };
+const Header = ({ search, handleSearch }) => (
+  <View style={styles.header}>
+    <Search value={search} onChange={handleSearch} />
+  </View>
+);
 
+const Separator = ({ highlighted }) =>
+  Platform.OS !== "android" && (
+    <View style={[styles.separator, highlighted && { marginLeft: 0 }]} />
+  );
+
+const EmptyState = ({ internships }) => (
+  <Text>
+    {internships.length === 0
+      ? "No internships available at this moment :("
+      : "We can't find any internship matching your query :("}
+  </Text>
+);
+
+class Internships extends React.Component {
   state = {
     internships: [],
     search: "",
@@ -49,6 +50,19 @@ class Internships extends React.Component {
       : internships.filter(internship => filterValues(internship));
   };
 
+  fetchInternships = () =>
+    fetch("https://iaeste.se/api/wp-json/internships/v1/offers/foreign")
+      .then(response => response.json())
+      .then(internships => this.setState({ internships, loading: false }))
+      .catch(error => console.error(error));
+
+  _renderItem = ({ item: internship }) => (
+    <InternshipCard
+      navigate={this.props.navigation.navigate}
+      internship={internship}
+    />
+  );
+
   _onRefresh = () => {
     this.setState({ refreshing: true });
     this.fetchInternships().then(() => {
@@ -56,18 +70,12 @@ class Internships extends React.Component {
     });
   };
 
-  fetchInternships = () =>
-    fetch("https://iaeste.se/api/wp-json/internships/v1/offers/foreign")
-      .then(response => response.json())
-      .then(internships => this.setState({ internships, loading: false }))
-      .catch(error => console.error(error));
-
   componentDidMount() {
     this.fetchInternships();
   }
 
   render() {
-    const { search, loading, refreshing } = this.state;
+    const { search, loading, refreshing, internships } = this.state;
     const filteredInternships = this.filterInternships();
 
     if (loading) {
@@ -75,21 +83,20 @@ class Internships extends React.Component {
     }
 
     return (
-      <ScrollView
+      <FlatList
         contentContainerStyle={styles.container}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={this._onRefresh} />
+        ListHeaderComponent={
+          <Header value={search} handleSearch={this.handleSearchChange} />
         }
-      >
-        <Search value={search} onChange={this.handleSearchChange} />
-        {filteredInternships.map(internship => (
-          <InternshipCard
-            key={internship.RefNo}
-            navigate={this.props.navigation.navigate}
-            internship={internship}
-          />
-        ))}
-      </ScrollView>
+        ItemSeparatorComponent={Separator}
+        ListEmptyComponent={<EmptyState internships={internships} />}
+        data={filteredInternships}
+        renderItem={this._renderItem}
+        keyExtractor={item => item.RefNo}
+        refreshing={refreshing}
+        onRefresh={this._onRefresh}
+        stickyHeaderIndices={[0]}
+      />
     );
   }
 }
@@ -98,8 +105,14 @@ export default Internships;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-start"
+    backgroundColor: "#fff"
+  },
+  header: {
+    backgroundColor: "#fff"
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "#eee",
+    width: "95%"
   }
 });
