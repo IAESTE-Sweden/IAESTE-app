@@ -23,23 +23,18 @@ class DetailsScreen extends React.Component {
   }
 }
 
-class App extends React.Component {
-  render() {
-    return (
-      <SafeAreaView
-        style={{ flex: 1, backgroundColor: "#fff" }}
-        forceInset={{ bottom: "never" }}
-      >
-        <AppContainer />
-      </SafeAreaView>
-    );
-  }
-}
+const App = () => (
+  <SafeAreaView
+    style={{ flex: 1, backgroundColor: "#fff" }}
+    forceInset={{ bottom: "never" }}
+  >
+    <AppContainer />
+  </SafeAreaView>
+);
 
 const TabBarIcon = ({ focused, horizontal, tintColor, navigation }) => {
   const { routeName } = navigation.state;
-  const IconComponent =
-    routeName === "Bookmarked" ? IconWithBadge : Ionicons;
+  const IconComponent = routeName === "Bookmarked" ? IconWithBadge : Ionicons;
   const iconNames = {
     Internships: "ios-globe",
     Bookmarked: "ios-bookmark"
@@ -52,7 +47,7 @@ const TabBarIcon = ({ focused, horizontal, tintColor, navigation }) => {
       badgeCount={3}
     />
   );
-}
+};
 
 const configOptions = {
   headerMode: "none",
