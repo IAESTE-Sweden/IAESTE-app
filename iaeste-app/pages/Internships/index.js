@@ -86,7 +86,7 @@ class Internships extends React.Component {
       <FlatList
         contentContainerStyle={styles.container}
         ListHeaderComponent={
-          <Header value={search} handleSearch={this.handleSearchChange} />
+          <Header search={search} handleSearch={this.handleSearchChange} />
         }
         ItemSeparatorComponent={Separator}
         ListEmptyComponent={<EmptyState internships={internships} />}

@@ -1,60 +1,41 @@
 import React from "react";
-import { StyleSheet, Text, Linking, ScrollView } from "react-native";
+import { StyleSheet, Text, Linking, ScrollView, View } from "react-native";
 
-import moment from "moment";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-import LabeledText from "../../components/LabeledText";
 import Button from "../../components/Button";
+import InternshipInfo from "../../components/InternshipInfo";
 
-class InternshipDetails extends React.Component {
-  render() {
-    const {
-      Employer,
-      RefNo,
-      Country,
-      City,
-      Business,
-      Website,
-      ExchangeType,
-      Workkind,
-      RequiredKnowledgeAndExperiences,
-      Deadline,
-      Language1,
-      Language1Level
-    } = this.props.navigation.state.params;
-    const location = [...(City ? [City] : []), ...(Country ? [Country] : [])];
+const Header = ({ goBack }) => (
+  <View style={styles.header}>
+    <Ionicons
+      onPress={() => goBack()}
+      name="md-arrow-back"
+      size={36}
+      color="#555"
+    />
+    <Text style={styles.goBackText} onPress={() => goBack()}>
+      Go back
+    </Text>
+  </View>
+);
 
-    return (
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.h1}>{Employer}</Text>
-        {location.length > 0 && (
-          <Text style={styles.h3}>{location.join(", ")}</Text>
-        )}
-        <LabeledText label="Ref. No">{RefNo}</LabeledText>
-        <LabeledText label="Offer Type">{ExchangeType}</LabeledText>
-        <LabeledText label="Business">{Business}</LabeledText>
-        <LabeledText label="Work Kind">{Workkind}</LabeledText>
-        <LabeledText label="Required knowledge and experiences">
-          {RequiredKnowledgeAndExperiences}
-        </LabeledText>
-        <LabeledText label="Languages">{Language1} ({Language1Level})</LabeledText>
-        <LabeledText label="Deadline">{moment(Deadline).format("DD MMM YYYY")}</LabeledText>
-        {Website && (
-          <>
-            <Text style={styles.h2}>Website</Text>
-            <Text style={styles.a} onPress={() => Linking.openURL(Website)}>
-              {Website}
-            </Text>
-          </>
-        )}
-        <Button
-          title="Visit Exchange Platform"
-          onPress={() => Linking.openURL("https://iaeste.net")}
-        />
-      </ScrollView>
-    );
-  }
-}
+const InternshipDetails = props => {
+  const { goBack } = props.navigation;
+  return (
+    <ScrollView
+      contentContainerStyle={styles.container}
+      stickyHeaderIndices={[0]}
+    >
+      <Header goBack={goBack} />
+      <InternshipInfo {...props.navigation.state.params} />
+      <Button
+        title="Visit Exchange Platform"
+        onPress={() => Linking.openURL("https://iaeste.net")}
+      />
+    </ScrollView>
+  );
+};
 
 export default InternshipDetails;
 
@@ -63,8 +44,21 @@ const styles = StyleSheet.create({
     width: "95%",
     backgroundColor: "#fff",
     justifyContent: "flex-start",
-    padding: 15,
-    margin: 5
+    padding: 15
+  },
+  header: {
+    width: "100%",
+    backgroundColor: "#fff",
+    height: 50,
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    alignItems: "center"
+  },
+  goBackText: {
+    marginLeft: 5,
+    fontSize: 16,
+    position: "relative",
+    top: -2
   },
   h1: {
     fontSize: 24,
