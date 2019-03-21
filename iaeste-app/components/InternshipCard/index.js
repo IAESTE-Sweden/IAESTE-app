@@ -1,22 +1,32 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
+format = str => {
+  const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+  const sentences = str
+    .split(".")
+    .map(sentence => capitalize(sentence.replace(/^\s+/g, "")));
+  return sentences.join(". ");
+};
+
 const InternshipCard = ({ internship, navigate }) => {
-  const { Employer, City, Country, RefNo, Business } = internship;
+  const { Employer, City, Country, RefNo, Workkind } = internship;
   return (
-  <TouchableOpacity
-    style={styles.container}
-    onPress={() => navigate("Details", internship)}
-  >
-    <Text style={styles.title}>{Employer}</Text>
-    <Text style={styles.location}>
-      {City}, {Country}
-    </Text>
-    <Text style={styles.refno}>{RefNo}</Text>
-    <Text style={styles.business}>{Business}</Text>
-  </TouchableOpacity>
-);
-  }
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigate("Details", internship)}
+    >
+      <Text style={styles.title}>{Employer}</Text>
+      <Text style={styles.location}>
+        {City}, {Country}
+      </Text>
+      <Text style={styles.refno}>{RefNo}</Text>
+      <Text style={styles.business} ellipsizeMode="tail" numberOfLines={6}>
+        {format(Workkind)}
+      </Text>
+    </TouchableOpacity>
+  );
+};
 
 export default InternshipCard;
 
