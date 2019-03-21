@@ -1,11 +1,8 @@
 import React from "react";
 
-export const InternshipContext = React.createContext({
-  internships: [],
-  loading: true
-});
+export const InternshipContext = React.createContext();
 
-class InternshipContextProvider extends React.Component {
+export class InternshipProvider extends React.Component {
   state = {
     internships: [],
     loading: true
@@ -31,4 +28,18 @@ class InternshipContextProvider extends React.Component {
   }
 }
 
-export default InternshipContextProvider;
+export const InternshipConsumer = props => {
+  const children = value =>
+    React.Children.map(props.children, (child, index) => {
+      return React.cloneElement(child, {
+        index,
+        ...props,
+        ...value
+      });
+    });
+  return (
+    <InternshipContext.Consumer>
+      {value => children(value)}
+    </InternshipContext.Consumer>
+  );
+};

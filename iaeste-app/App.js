@@ -11,7 +11,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import Internships from "./pages/Internships";
 import InternshipDetails from "./pages/InternshipDetails";
 
-import InternshipContextProvider, { InternshipContext } from "./components/InternshipContext";
+import { InternshipProvider, InternshipConsumer } from "./components/InternshipContext";
 import IconWithBadge from "./components/IconWithBadge";
 
 class DetailsScreen extends React.Component {
@@ -25,14 +25,14 @@ class DetailsScreen extends React.Component {
 }
 
 const App = () => (
-  <InternshipContextProvider>
+  <InternshipProvider>
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "#fff" }}
       forceInset={{ bottom: "never" }}
     >
       <AppContainer />
     </SafeAreaView>
-  </InternshipContextProvider>
+  </InternshipProvider>
 );
 
 const TabBarIcon = ({ focused, horizontal, tintColor, navigation }) => {
@@ -62,9 +62,9 @@ const configOptions = {
 const HomeStack = createStackNavigator(
   {
     Internships: props => (
-      <InternshipContext.Consumer>
-        {value => <Internships {...{ ...props, ...value }} />}
-      </InternshipContext.Consumer>
+      <InternshipConsumer>
+        <Internships { ...props } />
+      </InternshipConsumer>
     ),
     Details: props => <InternshipDetails {...props} />
   },
