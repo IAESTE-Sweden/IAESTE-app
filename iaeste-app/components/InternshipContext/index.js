@@ -1,5 +1,7 @@
 import React from "react";
 
+import { setSaved, getSaved } from "../../storage";
+
 export const InternshipContext = React.createContext();
 
 export class InternshipProvider extends React.Component {
@@ -16,17 +18,24 @@ export class InternshipProvider extends React.Component {
       .catch(error => console.error(error));
 
   addSaved = RefNo => {
-    this.setState(({ saved }) => ({ saved: [...saved, RefNo] }));
+    const { state } = this;
+    const saved = [...state.saved, RefNo];
+    this.setState({ saved });
+    setSaved(saved);
   };
 
   removeSaved = RefNo => {
-    this.setState(({ saved }) => ({
-      saved: saved.filter(saved => saved !== RefNo)
-    }));
+    const { state } = this;
+    const saved = state.saved.filter(saved => saved !== RefNo);
+    this.setState({ saved });
+    setSaved(saved);
   };
 
   componentDidMount() {
     this.fetchInternships();
+    getSaved().then(saved => {
+      this.setState({ saved });
+    });
   }
 
   render() {
