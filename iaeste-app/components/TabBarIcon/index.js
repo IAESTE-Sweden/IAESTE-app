@@ -12,8 +12,8 @@ class IconWithBadge extends React.Component {
         { badgeCount > 0 && (
           <View style={{
             position: 'absolute',
-            right: 5,
-            top: -3,
+            right: 0,
+            bottom: 0,
             backgroundColor: 'red',
             borderRadius: 6,
             width: 12,
@@ -29,4 +29,21 @@ class IconWithBadge extends React.Component {
   }
 }
 
-export default IconWithBadge;
+const TabBarIcon = ({ focused, horizontal, tintColor, navigation, badgeCount }) => {
+  const { routeName } = navigation.state;
+  const IconComponent = routeName === "Saved" ? IconWithBadge : Ionicons;
+  const iconNames = {
+    Internships: "ios-globe",
+    Saved: focused ? "ios-heart" : "ios-heart-empty"
+  };
+  return (
+    <IconComponent
+      name={iconNames[routeName]}
+      size={25}
+      color={tintColor}
+      badgeCount={badgeCount}
+    />
+  );
+};
+
+export default TabBarIcon;

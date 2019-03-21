@@ -10,19 +10,13 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import Internships from "./pages/Internships";
 import InternshipDetails from "./pages/InternshipDetails";
+import SavedInternships from "./pages/SavedInternships";
 
-import { InternshipProvider, InternshipConsumer } from "./components/InternshipContext";
-import IconWithBadge from "./components/IconWithBadge";
-
-class DetailsScreen extends React.Component {
-  render() {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Details Screen</Text>
-      </View>
-    );
-  }
-}
+import {
+  InternshipProvider,
+  InternshipConsumer
+} from "./components/InternshipContext";
+import TabBarIcon from "./components/TabBarIcon";
 
 const App = () => (
   <InternshipProvider>
@@ -35,23 +29,6 @@ const App = () => (
   </InternshipProvider>
 );
 
-const TabBarIcon = ({ focused, horizontal, tintColor, navigation }) => {
-  const { routeName } = navigation.state;
-  const IconComponent = routeName === "Bookmarked" ? IconWithBadge : Ionicons;
-  const iconNames = {
-    Internships: "ios-globe",
-    Bookmarked: "ios-bookmark"
-  };
-  return (
-    <IconComponent
-      name={iconNames[routeName]}
-      size={25}
-      color={tintColor}
-      badgeCount={3}
-    />
-  );
-};
-
 const configOptions = {
   headerMode: "none",
   navigationOptions: {
@@ -63,7 +40,7 @@ const HomeStack = createStackNavigator(
   {
     Internships: props => (
       <InternshipConsumer>
-        <Internships { ...props } />
+        <Internships {...props} />
       </InternshipConsumer>
     ),
     Details: props => <InternshipDetails {...props} />
@@ -74,12 +51,16 @@ const HomeStack = createStackNavigator(
   }
 );
 
-const DetailsStack = createStackNavigator(
+const SavedStack = createStackNavigator(
   {
-    Bookmarked: DetailsScreen
+    Saved: props => (
+      <InternshipConsumer>
+        <SavedInternships {...props} />
+      </InternshipConsumer>
+    )
   },
   {
-    initialRouteName: "Bookmarked",
+    initialRouteName: "Saved",
     ...configOptions
   }
 );
@@ -87,11 +68,15 @@ const DetailsStack = createStackNavigator(
 const Tabs = createBottomTabNavigator(
   {
     Internships: HomeStack,
-    Bookmarked: DetailsStack
+    Saved: SavedStack
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({
-      tabBarIcon: props => <TabBarIcon navigation={navigation} {...props} />
+      tabBarIcon: props => (
+        <InternshipConsumer>
+          <TabBarIcon navigation={navigation} {...props} />
+        </InternshipConsumer>
+      )
     }),
     tabBarOptions: {
       activeTintColor: "tomato",

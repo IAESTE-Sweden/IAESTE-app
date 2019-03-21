@@ -17,11 +17,13 @@ const Separator = ({ highlighted }) =>
   );
 
 const EmptyState = ({ internships }) => (
-  <Text>
-    {internships.length === 0
-      ? "No internships available at this moment :("
-      : "We can't find any internship matching your query :("}
-  </Text>
+  <View style={styles.emptyState}>
+    <Text>
+      {internships.length === 0
+        ? "No internships available at this moment :("
+        : "We can't find any internship matching your query :("}
+    </Text>
+  </View>
 );
 
 class Internships extends React.Component {
@@ -53,6 +55,7 @@ class Internships extends React.Component {
     <InternshipCard
       navigate={this.props.navigation.navigate}
       internship={internship}
+      isSaved={this.props.saved.includes(internship.RefNo)}
     />
   );
 
@@ -104,5 +107,11 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#eee",
     width: "95%"
+  },
+  emptyState: {
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
