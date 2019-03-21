@@ -34,7 +34,8 @@ const TabBarIcon = ({ focused, horizontal, tintColor, navigation, badgeCount }) 
   const IconComponent = routeName === "Saved" ? IconWithBadge : Ionicons;
   const iconNames = {
     Internships: "ios-globe",
-    Saved: focused ? "ios-heart" : "ios-heart-empty"
+    Saved: focused ? "ios-heart" : "ios-heart-empty",
+    News: "logo-facebook"
   };
   return (
     <IconComponent

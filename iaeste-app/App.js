@@ -1,16 +1,15 @@
 import React from "react";
-import { Text, View } from "react-native";
 import {
   createStackNavigator,
   createAppContainer,
   createBottomTabNavigator,
   SafeAreaView
 } from "react-navigation";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 import Internships from "./pages/Internships";
 import InternshipDetails from "./pages/InternshipDetails";
 import SavedInternships from "./pages/SavedInternships";
+import FacebookFeed from './pages/FacebookFeed';
 
 import {
   InternshipProvider,
@@ -67,6 +66,7 @@ const SavedStack = createStackNavigator(
 
 const Tabs = createBottomTabNavigator(
   {
+    News: FacebookFeed,
     Internships: HomeStack,
     Saved: SavedStack
   },
