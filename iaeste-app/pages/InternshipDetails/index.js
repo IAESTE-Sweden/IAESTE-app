@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, Linking, ScrollView, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  Linking,
+  ScrollView,
+  View,
+  TouchableOpacity
+} from "react-native";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -8,15 +15,10 @@ import InternshipInfo from "../../components/InternshipInfo";
 
 const Header = ({ goBack }) => (
   <View style={styles.header}>
-    <Ionicons
-      onPress={() => goBack()}
-      name="md-arrow-back"
-      size={36}
-      color="#555"
-    />
-    <Text style={styles.goBackText} onPress={() => goBack()}>
-      Go back
-    </Text>
+    <TouchableOpacity style={styles.goBack} onPress={() => goBack()}>
+      <Ionicons name="md-arrow-back" size={36} color="#555" />
+      <Text style={styles.goBackText}>Back</Text>
+    </TouchableOpacity>
   </View>
 );
 
@@ -50,6 +52,11 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#fff",
     height: 50,
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    alignItems: "center"
+  },
+  goBack: {
     flexDirection: "row",
     flexWrap: "nowrap",
     alignItems: "center"
