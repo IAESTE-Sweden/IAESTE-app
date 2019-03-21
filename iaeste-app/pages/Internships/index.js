@@ -26,10 +26,8 @@ const EmptyState = ({ internships }) => (
 
 class Internships extends React.Component {
   state = {
-    internships: [],
     search: "",
-    refreshing: false,
-    loading: true
+    refreshing: false
   };
 
   handleSearchChange = search => {
@@ -37,7 +35,8 @@ class Internships extends React.Component {
   };
 
   filterInternships = () => {
-    const { internships, search } = this.state;
+    const { search } = this.state;
+    const { internships } = this.props;
 
     const filterValues = internship => {
       const matchedValues = Object.values(internship).filter(value =>
@@ -50,12 +49,6 @@ class Internships extends React.Component {
       : internships.filter(internship => filterValues(internship));
   };
 
-  fetchInternships = () =>
-    fetch("https://iaeste.se/api/wp-json/internships/v1/offers/foreign")
-      .then(response => response.json())
-      .then(internships => this.setState({ internships, loading: false }))
-      .catch(error => console.error(error));
-
   _renderItem = ({ item: internship }) => (
     <InternshipCard
       navigate={this.props.navigation.navigate}
@@ -65,17 +58,14 @@ class Internships extends React.Component {
 
   _onRefresh = () => {
     this.setState({ refreshing: true });
-    this.fetchInternships().then(() => {
+    this.props.fetchInternships().then(() => {
       this.setState({ refreshing: false });
     });
   };
 
-  componentDidMount() {
-    this.fetchInternships();
-  }
-
   render() {
-    const { search, loading, refreshing, internships } = this.state;
+    const { search, refreshing } = this.state;
+    const { internships, loading } = this.props;
     const filteredInternships = this.filterInternships();
 
     if (loading) {
