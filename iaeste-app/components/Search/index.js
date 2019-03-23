@@ -3,27 +3,24 @@ import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-const Search = ({ value, onChange }) => {
-  console.log(value);
-  
-  return (
-    <View style={styles.container}>
-      <View style={styles.searchIcon}>
-        <Ionicons name="ios-search" size={25} color="#555" />
-      </View>
-      <TextInput
-        style={styles.search}
-        placeholder="Search employer, country, ref. no..."
-        value={value}
-        onChangeText={text => onChange(text)}
-      />
-      {value.length > 0 &&
+const Search = ({ value, onChange }) => (
+  <View style={styles.container}>
+    <View style={styles.searchIcon}>
+      <Ionicons name="ios-search" size={25} color="#555" />
+    </View>
+    <TextInput
+      style={styles.search}
+      placeholder="Search employer, country, ref. no..."
+      value={value}
+      onChangeText={text => onChange(text)}
+    />
+    {value.length > 0 && (
       <TouchableOpacity style={styles.closeIcon} onPress={() => onChange("")}>
         <Ionicons name="ios-close-circle" size={18} color="#555" />
-      </TouchableOpacity>}
-    </View>
-  );
-};
+      </TouchableOpacity>
+    )}
+  </View>
+);
 
 export default Search;
 
